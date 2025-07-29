@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<robot name="teti" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:property name="thin"     value=".01" />
+  <xacro:property name="wide"     value=".1" />
+
+  <xacro:property name="hull_len"   value="3.3" />
+  <xacro:property name="hull_w"     value=".5" />
+  <xacro:property name="hull_h"     value=".3" />
+
+  <xacro:property name="rudder_h"   value="1.5" />
+  <xacro:property name="main_h"     value="1" />
+
+  <xacro:property name="wand_h"     value="1" />
+  <xacro:property name="wand_r"     value=".01" />
+
+  <xacro:property name="mast_h"     value="4" />
+  <xacro:property name="mast_r"     value=".07" />
+
+  <xacro:property name="boma_l"     value="2" />
+  <xacro:property name="boma_r"     value=".04" />
+
+
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <xacro:macro name="default_inertial" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0" />
+    </inertial>
+  </xacro:macro>
+
+  <link name = "base_link">
+  </link>
+
+  <link name="boat_cm">
+    <visual>
+      <origin xyz="-.15 0 ${-hull_h/2}" rpy="0 0 0" />
+      <geometry>
+        <box size="${hull_len} ${hull_w} ${hull_h}"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    <collision>
+      <origin xyz="-.15 0 ${-hull_h/2}" rpy="0 0 0" />
+      <geometry>
+       <box size="${hull_len} ${hull_w} ${hull_h}"/>
+      </geometry>
+    </collision>
+    <xacro:default_inertial mass="10"/>
+  </link>
+
+  <joint name="boat_base" type="fixed">
+    <parent link="base_link"/>
+    <child link="boat_cm"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
+
+  <xacro:macro name="keel" params="name h">
+    <link name="${name}">
+      <visual>
+        <origin xyz="0 0 ${-h/2}" rpy="0 0 0" />
+        <geometry>
+           <box size=" ${wide} ${thin} ${h}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${-h/2}" rpy="0 0 0" />
+        <geometry>
+           <box size="${wide} ${thin} ${h}"/>
+        </geometry>
+      </collision>
+      <xacro:default_inertial mass="1"/>
+    </link>
+  </xacro:macro>
+
+  <xacro:keel name="rudder" h="${rudder_h}"/>
+
+  <joint name="rudder_joint" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="${-pi/4}" upper="${pi/4}" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="-2 0 .05"/>
+    <parent link="boat_cm"/>
+    <child link="rudder"/>
+  </joint>
+
+  <xacro:keel name="main_k" h="${main_h}"/>
+
+  <joint name="main_k_joint" type="fixed">
+    <parent link="boat_cm"/>
+    <child link="main_k"/>
+    <origin xyz=".15 0 ${-hull_h}"/>
+  </joint>
+
+  <xacro:macro name="foil" params="parent parent_h w">
+    <link name="${parent}_foil">
+      <visual>
+        <origin xyz="0 0 ${-thin/2}" rpy="0 0 0" />
+        <geometry>
+           <box size="${wide} ${w} ${thin}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 ${-thin/2}" rpy="0 0 0" />
+        <geometry>
+           <box size="${wide} ${w} ${thin}"/>
+        </geometry>
+      </collision>
+      <xacro:default_inertial mass="1"/>
+    </link>
+
+    <joint name="${parent}_foil_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${parent}_foil"/>
+      <origin xyz="0 0 ${-parent_h}"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:foil parent="rudder" parent_h="${rudder_h}" w=".2"/>
+  
+  <xacro:foil parent="main_k" parent_h="${main_h}" w=".5"/>
+
+  <link name="wand">
+    <visual>
+      <origin xyz="0 0 ${-wand_h/2}" rpy="0 0 0" />
+      <geometry>
+         <cylinder radius="${wand_r}" length="${wand_h}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${-wand_h/2}" rpy="0 0 0" />
+      <geometry>
+         <cylinder radius="${wand_r}" length="${wand_h}"/>
+      </geometry>
+    </collision>
+    <xacro:default_inertial mass="1"/>
+  </link>
+
+  <joint name="wand_joint" type="revolute">
+    <axis xyz="0 1 0"/>
+    <limit effort="1000.0" lower="0" upper="${pi/2}" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="2.3 0 0"/>
+    <parent link="boat_cm"/>
+    <child link="wand"/>
+  </joint>
+
+  <link name="mast">
+    <visual>
+      <origin xyz="0 0 ${mast_h/2}" rpy="0 0 0" />
+      <geometry>
+         <cylinder radius="${mast_r}" length="${mast_h}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${mast_h/2}" rpy="0 0 0" />
+      <geometry>
+         <cylinder radius="${mast_r}" length="${mast_h}"/>
+      </geometry>
+    </collision>
+    <xacro:default_inertial mass="1"/>
+  </link>
+
+  <joint name="mast_joint" type="revolute">
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="${-pi/4}" upper="${pi/4}" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz=".8 0 0"/>
+    <parent link="boat_cm"/>
+    <child link="mast"/>
+  </joint>
+
+  <link name="boma">
+    <visual>
+      <origin xyz="${-boma_l/2} 0 0" rpy="0 ${pi/2} 0" />
+      <geometry>
+         <cylinder radius="${boma_r}" length="${boma_l}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <origin xyz="${-boma_l/2} 0 0" rpy="0 ${pi/2} 0" />
+      <geometry>
+         <cylinder radius="${boma_r}" length="${boma_l}"/>
+      </geometry>
+      <material name="black"/>
+    </collision>
+    <xacro:default_inertial mass="1"/>
+  </link>
+
+  <joint name="boma_joint" type="fixed">
+    <parent link="mast"/>
+    <child link="boma"/>
+    <origin xyz="0 0 .5"/>
+  </joint>
+
+</robot>

@@ -1,0 +1,8 @@
+
+# python package
+ros2 pkg create --build-type ament_python --license Apache-2.0 [name] --dependencies rclpy [other dependencies]
+ros2 pkg create --build-type ament_python --license Apache-2.0 poli_sail_gui --dependencies rclpy std_msgs geometry_msgs sensor_msgs nav_msgs
+
+# c++ package
+ros2 pkg create --build-type ament_cmake --license Apache-2.0 [name] --dependencies rclcpp [other dependencies]
+ros2 pkg create --build-type ament_cmake --license Apache-2.0 flap_control --dependencies rclcpp std_msgs geometry_msgs sensor_msgs 

@@ -1,0 +1,22 @@
+brunilde_node:
+  ros__parameters:
+    freq: 150
+
+# ------------------ #
+
+wand_parser:
+  ros__parameters:
+    id: 1
+    length: 2
+    scale: 100
+
+# ------------------ #
+
+imu_parser:
+  ros__parameters:
+    link: imu_link
+    id: [ 2, 3, 4] # | rpy | vel | acc |
+    tf: [ 0.0, 0.0, 0.0, 180.0, 0.0, 0.0] # x,y,z,roll,pitch,yaw
+    cov: [ 0.01, 0.1, 5.0 ] # | rpy | vel | acc |
+    publish_pose: true
+    publish_ypr: true
