@@ -12,7 +12,7 @@ The container setup includes:
 
 This is ideal for robotics development, CI setups, or cross-platform compatibility when using ROS 2.
 
-For an overview of what docker is, how it works and why we use it, see the [Why Docker README](software_necessary.md).
+For an overview of what docker is, how it works and why we use it, see the [Why Docker README](why_docker.md).
 
 ---
 
