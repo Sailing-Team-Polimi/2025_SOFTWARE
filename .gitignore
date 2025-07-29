@@ -52,7 +52,7 @@ qtcreator-*
 CATKIN_IGNORE
 Docker/*
 !Docker/orca_container
-!Docker/container_setup.md
+!Docker/*.md
 
 log
 ros2_ws/rosbags/*
