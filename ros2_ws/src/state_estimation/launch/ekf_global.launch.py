@@ -22,6 +22,7 @@ def generate_launch_description():
         package= 'state_estimation',
         executable = 'gps_to_local',
         name = 'gps_to_local',
+        remappings=[('/gps_data', '/fix')],
     )
     
     ld.add_action(gps_node)
@@ -30,6 +31,7 @@ def generate_launch_description():
         package = 'state_estimation',
         executable = 'local_to_gps',
         name = 'local_to_gps',
+        remappings=[('/gps_data', '/fix')],
     )
     
     ld.add_action(visualization_node)

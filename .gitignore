@@ -51,7 +51,8 @@ qtcreator-*
 # Catkin custom files
 CATKIN_IGNORE
 Docker/*
-!Docker/orca_container
+!Docker/personal_container_template
+!Docker/raspi_container
 !Docker/*.md
 
 log

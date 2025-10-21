@@ -52,11 +52,11 @@ install(DIRECTORY config
 
 
 # Create the executable 
-add_executable(brunilde_simple_node
-  src/brunilde_simple_node.cpp
+add_executable(gate_node
+  src/gate_node.cpp
 )
 # Link dependencies
-ament_target_dependencies(brunilde_simple_node
+ament_target_dependencies(gate_node
   rclcpp
   std_msgs
   sail_msgs
@@ -87,7 +87,7 @@ ament_target_dependencies(imu_parser_node
 
 # Install the executable
 install(TARGETS
-  brunilde_simple_node
+  gate_node
   general_parser_node
   imu_parser_node
   DESTINATION lib/${PROJECT_NAME}

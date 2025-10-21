@@ -13,10 +13,6 @@ def generate_launch_description():
 
     ld = LaunchDescription()
 
-
-
-
-
     ekf_node = Node(
         package='robot_localization',
         executable='ekf_node',

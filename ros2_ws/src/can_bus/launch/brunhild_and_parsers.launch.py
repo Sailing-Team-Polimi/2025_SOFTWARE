@@ -66,7 +66,7 @@ def generate_launch_description():
         ]
     )
 
-    # ld.add_action(imu_parser) 
+    ld.add_action(imu_parser) 
 
     # ------------------------------------------ #
 

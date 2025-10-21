@@ -22,7 +22,7 @@ def generate_launch_description():
     pot_parser = Node(
         package='can_bus',
         executable='general_parser_node',
-        name='wand_parser',
+        name='pot_parser',
         parameters=[params_file],
         arguments=['--ros-args', '--log-level', 'WARN'],
         output='screen',

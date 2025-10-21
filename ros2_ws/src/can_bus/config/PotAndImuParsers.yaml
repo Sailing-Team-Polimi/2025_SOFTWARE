@@ -14,9 +14,12 @@ pot_parser:
 
 imu_parser:
   ros__parameters:
+    id: [ 4, 3, 7]                # rpy, vel, acc IDs
+    available: [true, false, true]# expect RPY & ACC only; VEL ignored
+    cov: [0.01, 0.1, 5.0]
     link: imu_link
-    id: [ 4, 3, 7] # | rpy | vel | acc |
-    tf: [ 0.0, 0.0, 0.0, 180.0, 0.0, 0.0] # x,y,z,roll,pitch,yaw
-    cov: [ 0.01, 0.1, 5.0 ] # | rpy | vel | acc |
+    tf: [ 0.0, 0.0, 0.0, 180.0, 0.0, 0.0]   # x,y,z, roll,pitch,yaw (radians)
+    tf_publish_hz: 10.0
     publish_pose: true
-    publish_ypr: true
+    publish_ypr:  true
+

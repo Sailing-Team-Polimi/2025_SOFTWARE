@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  jazzy:
+    build: ./
+    image: polisail:jazzy-desktop
+    container_name: ros-persefone
+    user: "ros"               # make sure UID/GID match host (see Dockerfile note)
+    environment:
+      - DISPLAY=host.docker.internal:0
+      - QT_X11_NO_MITSHM=1  # Avoids potential issues with shared memory
+    volumes:
+      - C:/Users/tommy/Desktop/code_on_persefone/2025_SOFTWARE/ros2_ws:/home/ros/ros2_ws
+      # DRI for HW accel (optional but nice)
+      - /dev/dri:/dev/dri
+      # If you still need XWayland apps:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $HOME/.Xauthority:/home/ros/.Xauthority:ro
+    network_mode: host
+    ipc: host
+    privileged: true
+    stdin_open: true
+    tty: true
+    command: bash
+    entrypoint: ""
